@@ -1,24 +1,40 @@
 ---
 /** Trusted-by wordmarks + awards band. */
-const logos = ['Northway', 'Fable & Co', 'Atlas Labs', 'Verdi Studio', 'Kindred', 'Pillar', 'Hearth'];
+const logos = [
+  "Northway",
+  "Fable & Co",
+  "Atlas Labs",
+  "Verdi Studio",
+  "Kindred",
+  "Pillar",
+  "Hearth",
+];
 ---
+
 <section id="featured" data-screen-label="Featured">
   <div class="feat-top">
     <span class="kicker reveal">// Trusted by</span>
-    <span class="feat-note reveal" data-d="1">Placeholder client wordmarks — swap for real client logos</span>
   </div>
   <div class="feat-marquee reveal" data-d="1" aria-label="Trusted by">
     <div class="feat-track">
-      {logos.map((l) => <span class="feat-logo" set:html={l.replace('&', '&amp;')} />)}
+      {
+        logos.map((l) => (
+          <span class="feat-logo" set:html={l.replace("&", "&amp;")} />
+        ))
+      }
     </div>
     <div class="feat-track" aria-hidden="true">
-      {logos.map((l) => <span class="feat-logo" set:html={l.replace('&', '&amp;')} />)}
+      {
+        logos.map((l) => (
+          <span class="feat-logo" set:html={l.replace("&", "&amp;")} />
+        ))
+      }
     </div>
   </div>
   <div class="feat-awards reveal" data-d="2">
-    <span class="aw"><em>Awwwards</em> · Site of the Day — '25</span>
+    <!-- <span class="aw"><em>Awwwards</em> · Site of the Day — '25</span>
     <span class="aw"><em>CSS Design Awards</em> · Best UI — '25</span>
     <span class="aw"><em>The Webby Awards</em> · Nominee — '24</span>
-    <span class="aw"><em>Clutch</em> · Top D2C Agency — '25</span>
+    <span class="aw"><em>Clutch</em> · Top D2C Agency — '25</span> -->
   </div>
 </section>
