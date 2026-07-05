@@ -99,6 +99,12 @@ body.hero-orange #orb-a { display: none; }
 #hero p { margin: 26px 0 0; font-family: var(--font-serif); font-size: clamp(15px, 1.4vw, 19px); line-height: 1.55; color: var(--sh-gray-300); max-width: 46ch; opacity: 0; transform: translateY(18px); transition: opacity 1s var(--ease-out) .5s, transform 1s var(--ease-out) .5s; }
 #hero .hero-cta { margin-top: 30px; display: flex; align-items: center; gap: 20px; flex-wrap: wrap; opacity: 0; transform: translateY(18px); transition: opacity 1s var(--ease-out) .85s, transform 1s var(--ease-out) .85s; }
 .hero-ready #hero p, .hero-ready #hero .hero-cta { opacity: 1; transform: none; }
+/* desktop: paragraph left, "See what we do" on the same bottom line at right */
+@media (min-width: 721px) {
+  #hero .hero-foot { display: flex; align-items: flex-end; justify-content: space-between; gap: 40px; }
+  #hero .hero-foot #hero-sub { margin-top: 0; }
+  #hero .hero-cta { margin-top: 0; margin-right: clamp(0px, 4vw, 80px); flex: none; }
+}
 .btn-primary { display: inline-flex; align-items: center; gap: 10px; text-decoration: none; cursor: pointer; background: var(--sh-amber); color: var(--sh-black); border: none; border-radius: var(--radius-sm); font-size: 12px; font-weight: var(--weight-semibold); letter-spacing: var(--tracking-caps); text-transform: uppercase; padding: 18px 34px; will-change: transform; transition: background var(--duration-base) var(--ease-out), transform .35s var(--ease-out); }
 .btn-primary:hover { background: var(--sh-yellow); }
 .btn-primary:active { transform: scale(.98); }
@@ -106,9 +112,10 @@ body.hero-orange #orb-a { display: none; }
 .btn-outline:hover { border-color: var(--sh-white); background: var(--sh-white); color: var(--sh-black); }
 .link-quiet { font-size: 12px; font-weight: var(--weight-semibold); letter-spacing: var(--tracking-caps); text-transform: uppercase; text-decoration: none; color: var(--sh-gray-300); border-bottom: 1px solid var(--sh-gray-700); padding-bottom: 4px; transition: color var(--duration-fast) var(--ease-out), border-color var(--duration-fast) var(--ease-out); }
 .link-quiet:hover { color: var(--sh-white); border-color: var(--sh-white); }
-#scroll-hint { position: absolute; bottom: 32px; left: clamp(20px, 6vw, 96px); display: flex; align-items: center; gap: 12px; color: var(--sh-gray-500); font-size: 10px; letter-spacing: var(--tracking-caps); text-transform: uppercase; }
-#scroll-hint::after { content: ""; width: 56px; height: 1px; background: var(--sh-gray-700); animation: hint 2.4s var(--ease-out) infinite; transform-origin: 0 50%; }
-@keyframes hint { 0% { transform: scaleX(0); } 55% { transform: scaleX(1); } 100% { transform: scaleX(0); } }
+#scroll-hint { position: absolute; bottom: 30px; left: 50%; transform: translateX(-50%); display: flex; flex-direction: column; align-items: center; gap: 10px; color: var(--sh-gray-500); font-size: 10px; letter-spacing: var(--tracking-caps); text-transform: uppercase; }
+#scroll-hint .mouse { width: 24px; height: 40px; border: 1.5px solid var(--sh-gray-500); border-radius: 13px; position: relative; }
+#scroll-hint .mouse::after { content: ""; position: absolute; top: 7px; left: 50%; width: 3px; height: 7px; border-radius: 2px; background: var(--sh-gray-300); animation: mwheel 1.9s var(--ease-out) infinite; }
+@keyframes mwheel { 0% { opacity: 0; transform: translate(-50%, 0); } 20% { opacity: 1; } 55% { opacity: 1; transform: translate(-50%, 12px); } 100% { opacity: 0; transform: translate(-50%, 12px); } }
 
 /* ---------- marquee ---------- */
 .marquee { display: flex; overflow: hidden; user-select: none; border-top: 1px solid rgba(255,255,255,.1); border-bottom: 1px solid rgba(255,255,255,.1); background: var(--sh-black); }
@@ -272,14 +279,14 @@ footer { background: var(--sh-black); padding: clamp(70px, 9vw, 120px) clamp(20p
 @media (max-width: 720px) {
   .f-grid { grid-template-columns: 1fr; gap: 36px; }
   .f-bottom img { height: 72px; }
-  .f-bottom { align-items: flex-start; }
+  .f-bottom { flex-direction: column; align-items: flex-start; }
 }
 
 @media (prefers-reduced-motion: reduce) {
   .reveal, .mline .word, #hero p, #hero .hero-cta, #hero .hero-tag { opacity: 1 !important; transform: none !important; transition: none !important; }
   .line-mask > span { transform: none !important; transition: none !important; }
   .marquee-track, .feat-track { animation: none; }
-  #scroll-hint::after { animation: none; transform: scaleX(1); }
+  #scroll-hint .mouse::after { animation: none; opacity: 1; transform: translate(-50%, 5px); }
   .orb { display: none; }
   #cursor, #cursor-ring { display: none; }
 }
