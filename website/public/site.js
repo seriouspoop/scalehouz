@@ -6,21 +6,6 @@
   var $ = function (s, r) { return (r || document).querySelector(s); };
   var $$ = function (s, r) { return Array.prototype.slice.call((r || document).querySelectorAll(s)); };
 
-  /* ---------- personalization ---------- */
-  var INTENTS = {
-    brand: { kicker: 'Brand strategy · For founders', sub: 'A brand built to outlast trends — positioning, narrative, and identity handled with trust at the core.', heroCta: 'Build your brand', headline: 'Let’s build a brand that lasts.' },
-    marketing: { kicker: 'Growth marketing · Engineered', sub: 'No fluff, no jargon. Channels and campaigns chosen for meaningful, compounding impact.', heroCta: 'Scale your marketing', headline: 'Let’s engineer your growth.' },
-    design: { kicker: 'Design · Nothing accidental', sub: 'Editorial, minimal, deliberate — creative planning where every decision earns its place.', heroCta: 'See the craft', headline: 'Let’s design with intent.' },
-    website: { kicker: 'Websites · Built to convert', sub: 'Fast, premium digital experiences — designed to feel like a product, not a brochure.', heroCta: 'Build your website', headline: 'Let’s build your next website.' },
-    explore: null
-  };
-  function applyIntent(intent) {
-    var c = INTENTS[intent]; if (!c) return;
-    var k = $('#hero-kicker'); if (k) k.textContent = c.kicker;
-    var s = $('#hero-sub'); if (s) s.textContent = c.sub;
-    var h = $('#cta-headline'); if (h) h.textContent = c.headline;
-  }
-
   /* ---------- split manifesto into words (for stagger) ---------- */
   $$('.mline[data-split]').forEach(function (line) {
     var kids = Array.prototype.slice.call(line.childNodes);
@@ -50,38 +35,13 @@
   var mqHTML = WORDS.map(function (w) { return '<span class="mq-word">' + w.replace(/&/g, '&amp;') + '</span>'; }).join('');
   ['#mq-1', '#mq-1b', '#mq-2', '#mq-2b'].forEach(function (id) { var el = $(id); if (el) el.innerHTML = mqHTML; });
 
-  /* ---------- onboarding ---------- */
-  var onboard = $('#onboard');
-  var stored = localStorage.getItem('sh-intent');
   var lenis = null;
-
   var runPlanetIntro = null;
   function startHero() {
     document.body.classList.add('hero-ready');
     if (runPlanetIntro) runPlanetIntro();
   }
-  function dismissOnboard(instant) {
-    if (instant) onboard.style.transition = 'none';
-    onboard.classList.add('gone');
-    onboard.setAttribute('aria-hidden', 'true');
-    if (lenis) lenis.scrollTo(0, { immediate: true });
-    startHero();
-  }
-  if (stored) {
-    applyIntent(stored); dismissOnboard(true);
-  } else {
-    $$('.ob-opt').forEach(function (btn) {
-      btn.addEventListener('click', function () {
-        var intent = btn.dataset.intent;
-        localStorage.setItem('sh-intent', intent);
-        btn.classList.add('picked');
-        applyIntent(intent);
-        setTimeout(function () { dismissOnboard(false); }, reduced ? 0 : 460);
-      });
-    });
-    var skipBtn = $('#ob-skip'); if (skipBtn) skipBtn.addEventListener('click', function () { localStorage.setItem('sh-intent', 'explore'); dismissOnboard(false); });
-    setTimeout(function () { if (!onboard.classList.contains('gone')) dismissOnboard(false); }, 6000);
-  }
+  startHero();
 
   /* ---------- Lenis smooth scroll ---------- */
   if (!reduced && window.Lenis) {

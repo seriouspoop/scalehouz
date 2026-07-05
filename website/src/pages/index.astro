@@ -1,7 +1,6 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Header from '../components/Header.astro';
-import OnboardOverlay from '../components/OnboardOverlay.astro';
 import Hero from '../components/Hero.astro';
 import Marquee from '../components/Marquee.astro';
 import Stats from '../components/Stats.astro';
@@ -24,7 +23,6 @@ import '../styles/home.css';
   <div id="cursor-ring" aria-hidden="true"></div>
   <div id="proj-reveal" aria-hidden="true"><div class="rv"></div></div>
 
-  <OnboardOverlay />
   <Header />
   <Hero />
 
@@ -32,12 +30,12 @@ import '../styles/home.css';
 
   <Stats />
   <Featured />
-  <Projects />
+  <Manifesto />
 
   <Marquee extraClass="light rev" dur="50s" idA="mq-2" idB="mq-2b" />
 
   <Services />
-  <Manifesto />
+  <Projects />
   <Process />
   <CtaSection />
   <Footer />
