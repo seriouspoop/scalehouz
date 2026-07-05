@@ -1,0 +1,47 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Header from '../components/Header.astro';
+import OnboardOverlay from '../components/OnboardOverlay.astro';
+import Hero from '../components/Hero.astro';
+import Marquee from '../components/Marquee.astro';
+import Stats from '../components/Stats.astro';
+import Featured from '../components/Featured.astro';
+import Projects from '../components/Projects.astro';
+import Services from '../components/Services.astro';
+import Manifesto from '../components/Manifesto.astro';
+import Process from '../components/Process.astro';
+import CtaSection from '../components/CtaSection.astro';
+import Footer from '../components/Footer.astro';
+import '../styles/home.css';
+---
+<BaseLayout
+  title="Scale Houz — Every design to scale."
+  description="Scale Houz is a global branding, web design & marketing agency for D2C brands. Brand strategy, premium websites, and growth marketing engineered to convert."
+  path="/"
+>
+  <div id="progress" aria-hidden="true"></div>
+  <div id="cursor" aria-hidden="true"></div>
+  <div id="cursor-ring" aria-hidden="true"></div>
+  <div id="proj-reveal" aria-hidden="true"><div class="rv"></div></div>
+
+  <OnboardOverlay />
+  <Header />
+  <Hero />
+
+  <Marquee dur="44s" idA="mq-1" idB="mq-1b" />
+
+  <Stats />
+  <Featured />
+  <Projects />
+
+  <Marquee extraClass="light rev" dur="50s" idA="mq-2" idB="mq-2b" />
+
+  <Services />
+  <Manifesto />
+  <Process />
+  <CtaSection />
+  <Footer />
+
+  <script is:inline src="https://unpkg.com/lenis@1.1.14/dist/lenis.min.js"></script>
+  <script is:inline src="/site.js"></script>
+</BaseLayout>

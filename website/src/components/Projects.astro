@@ -1,0 +1,24 @@
+---
+/** Selected-work list with a cursor-following image reveal (site.js). */
+const projects = [
+  { name: 'Northway', tag: 'Brand strategy', num: '(01)', reveal: 'Founder brand sprint', color: 'var(--sh-cyan)' },
+  { name: 'Fable &amp; Co', tag: 'Growth marketing', num: '(02)', reveal: 'Launch that landed', color: 'var(--sh-amber)' },
+  { name: 'Atlas Labs', tag: 'Design', num: '(03)', reveal: 'Scaling the story', color: 'var(--sh-magenta)' },
+  { name: 'Verdi Studio', tag: 'Website', num: '(04)', reveal: 'A website that converts', color: 'var(--sh-yellow)' },
+  { name: 'Kindred', tag: 'Brand + web', num: '(05)', reveal: 'Quiet rebrand', color: 'var(--sh-stone)' },
+];
+---
+<section id="projects" data-screen-label="Projects">
+  <div class="sec-head dark">
+    <span class="kicker reveal">// Selected work</span>
+    <h2 class="reveal" data-d="1">Ambitious ideas, turned into refined digital realities.</h2>
+  </div>
+  <div class="proj-list">
+    {projects.map((p) => (
+      <a class="proj" href="#cta" data-cursor data-reveal={p.reveal} data-color={p.color}>
+        <span class="p-name" set:html={p.name} />
+        <span class="p-meta"><span class="p-tag">{p.tag}</span><span class="arrow">↗</span><span class="p-num">{p.num}</span></span>
+      </a>
+    ))}
+  </div>
+</section>

@@ -1,0 +1,57 @@
+---
+/**
+ * BaseLayout — shared <head>, SEO meta, and design tokens for every page.
+ * Keeps baseline HTML lightweight for low TTFB on the Cloudflare edge.
+ */
+import '../styles/tokens.css';
+
+export interface Props {
+  title: string;
+  description: string;
+  /** Absolute path of this page, used for canonical + og:url */
+  path?: string;
+  bodyClass?: string;
+}
+
+const {
+  title,
+  description,
+  path = '/',
+  bodyClass,
+} = Astro.props;
+
+const siteName = 'Scale Houz';
+const canonical = new URL(path, Astro.site ?? 'https://scalehouz.com').href;
+const ogImage = new URL('/assets/logo/scale-houz-logo-on-black.png', Astro.site ?? 'https://scalehouz.com').href;
+---
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <link rel="canonical" href={canonical} />
+  <link rel="sitemap" href="/sitemap-index.xml" />
+
+  <title>{title}</title>
+  <meta name="description" content={description} />
+  <meta name="theme-color" content="#000000" />
+
+  <!-- Open Graph / social -->
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content={siteName} />
+  <meta property="og:title" content={title} />
+  <meta property="og:description" content={description} />
+  <meta property="og:url" content={canonical} />
+  <meta property="og:image" content={ogImage} />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content={title} />
+  <meta name="twitter:description" content={description} />
+  <meta name="twitter:image" content={ogImage} />
+
+  <slot name="head" />
+</head>
+<body class={bodyClass}>
+  <slot />
+</body>
+</html>

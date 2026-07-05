@@ -1,0 +1,19 @@
+---
+/**
+ * Hero "3D" scene — a CSS/SVG planet with an orbiting, tilted text ring.
+ *
+ * All motion (ring spin, intro scale, scroll parallax) is driven by browser-only
+ * code in /public/site.js, which runs exclusively on the client. Nothing here
+ * touches window/document during the static build, so SSG stays safe. This is the
+ * isolation seam described in the architecture brief: to swap in a heavy WebGL /
+ * Three.js scene with progressive .glb (Draco) loading later, replace this markup
+ * with a `client:only` island — the surrounding layout and styles stay untouched.
+ */
+---
+<div id="planet-scene" aria-hidden="true">
+  <svg class="ps-textring" viewBox="0 0 500 500">
+    <defs><path id="ptcircle" d="M 250,250 m -150,0 a 150,150 0 1,1 300,0 a 150,150 0 1,1 -300,0"></path></defs>
+    <text textLength="942" lengthAdjust="spacingAndGlyphs"><textPath href="#ptcircle" startOffset="0">BRANDING ✳ DESIGN ✳ MARKETING ✳ SCALE HOUZ ✳ </textPath></text>
+  </svg>
+  <div class="planet"></div>
+</div>

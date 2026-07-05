@@ -1,0 +1,22 @@
+---
+import PlanetScene from './PlanetScene.astro';
+---
+<section id="hero" data-screen-label="Hero">
+  <div class="orb" id="orb-a" aria-hidden="true"></div>
+  <div class="orb" id="orb-b" aria-hidden="true"></div>
+  <div id="hero-grain" aria-hidden="true"></div>
+  <PlanetScene />
+  <div class="hero-inner">
+    <span class="kicker" id="hero-kicker">Strategy · Marketing · Creative planning</span>
+    <h1 aria-label="Branding, Web Design & Marketing Agency for D2C Brands">
+      <span class="line-mask"><span style="transition-delay:.05s">Branding, Web Design</span></span>
+      <span class="line-mask"><span style="transition-delay:.22s">&amp; Marketing Agency</span></span>
+      <span class="line-mask"><span style="transition-delay:.38s">for D2C Brands<span class="dot">.</span></span></span>
+    </h1>
+    <p id="hero-sub">We help young founders and growing businesses solve real problems — so your brand, vision, and growth are in safe, thoughtful hands.</p>
+    <div class="hero-cta">
+      <a class="link-quiet" href="#services" data-cursor>See what we do</a>
+    </div>
+  </div>
+  <div id="scroll-hint" aria-hidden="true">Scroll</div>
+</section>

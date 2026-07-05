@@ -1,0 +1,23 @@
+---
+/** From brief to launch — 4-step process grid. */
+const steps = [
+  { wk: 'Week 1', num: '01', h: 'Discovery &amp; strategy', p: 'We analyse your brand and audience to build a solid foundation and a clear plan.' },
+  { wk: 'Week 2–3', num: '02', h: 'Design &amp; prototyping', p: 'We craft the journey and high-fidelity prototypes to test, refine, and approve.' },
+  { wk: 'Week 4–5', num: '03', h: 'Build &amp; motion', p: 'Pixel-perfect build with smooth interactions, responsive layouts, fast performance.' },
+  { wk: 'Week 6', num: '04', h: 'Launch &amp; support', p: 'Rigorous QA, SEO, launch — then we stay close as you grow.' },
+];
+---
+<section id="process" data-screen-label="Process">
+  <div class="sec-head light" style="max-width:1280px">
+    <span class="kicker reveal">// How we work</span>
+    <h2 class="reveal" data-d="1">From brief to launch, without the chaos.</h2>
+  </div>
+  <div class="proc-grid">
+    {steps.map((s, i) => (
+      <div class="step reveal" data-d={i === 0 ? undefined : String(i)}>
+        <span class="wk">{s.wk}</span><span class="snum">{s.num}</span>
+        <h3 set:html={s.h} /><p>{s.p}</p>
+      </div>
+    ))}
+  </div>
+</section>

@@ -1,0 +1,35 @@
+/* Scale Houz — Colour tokens (source: Brand Guidelines 2025, p.6) */
+:root {
+  /* Base palette */
+  --sh-black: #000000;        /* BLACK — authority & contrast. Visual anchor. */
+  --sh-white: #FFFFFF;        /* WHITE — clarity, openness, breathing space. */
+  --sh-cyan: #00BCF2;         /* ELECTRIC CYAN — growth, clarity, scale, momentum. */
+  --sh-yellow: #FFF200;       /* SIGNAL YELLOW — attention & annotation. Draws focus. */
+  --sh-amber: #F18E31;        /* AMBER FLAME — action & ignition. Movement, decisions. */
+  --sh-magenta: #EC008C;      /* VIVID MAGENTA — bold accent. Differentiation, disruption. */
+  --sh-stone: #E1E2D2;        /* SOFT STONE — calm, balance, premium softness. */
+
+  /* Derived neutrals (oklch steps between black and white) */
+  --sh-gray-900: #141414;
+  --sh-gray-700: #3d3d3d;
+  --sh-gray-500: #737373;
+  --sh-gray-300: #c2c2c2;
+  --sh-gray-100: #f2f2f0;
+  --sh-stone-soft: #f0f1e8;   /* lighter tint of Soft Stone for large surfaces */
+
+  /* Semantic aliases */
+  --surface-page: var(--sh-white);
+  --surface-inverse: var(--sh-black);
+  --surface-card: var(--sh-white);
+  --surface-muted: var(--sh-stone);
+  --text-heading: var(--sh-black);
+  --text-body: var(--sh-gray-700);
+  --text-muted: var(--sh-gray-500);
+  --text-inverse: var(--sh-white);
+  --accent-action: var(--sh-amber);      /* CTAs, decisions */
+  --accent-focus: var(--sh-yellow);      /* highlights, annotation */
+  --accent-brand: var(--sh-cyan);        /* growth / momentum accents */
+  --accent-disrupt: var(--sh-magenta);   /* rare bold accent */
+  --border-default: rgba(0, 0, 0, 0.12);
+  --border-strong: var(--sh-black);
+}

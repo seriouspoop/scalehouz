@@ -1,0 +1,207 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import '../styles/onboarding.css';
+
+/**
+ * Zero-backend lead intake via Web3Forms. Override PUBLIC_WEB3FORMS_KEY in
+ * Cloudflare Pages env to swap keys; left empty, the flow still completes
+ * and shows the confirmation screen (useful for local dev / preview).
+ */
+const FORM_ENDPOINT = 'https://api.web3forms.com/submit';
+const WEB3FORMS_KEY = import.meta.env.PUBLIC_WEB3FORMS_KEY ?? 'a9e1bf42-e1f7-4f5d-9feb-d7669d02c848';
+---
+<BaseLayout
+  title="Start a project — Scale Houz"
+  description="Tell us about your D2C brand and what you need — brand, design, website, or marketing. We reply within a day."
+  path="/onboarding"
+>
+  <Fragment slot="head">
+    <meta name="robots" content="noindex, follow" />
+  </Fragment>
+
+  <div class="ob-orbs" aria-hidden="true"><span class="o1"></span><span class="o2"></span><span class="o3"></span></div>
+  <div id="cursor" aria-hidden="true"></div>
+  <div id="cursor-ring" aria-hidden="true"></div>
+
+  <div class="ob-top">
+    <a class="logo" href="/" aria-label="Scale Houz — home"><img src="/assets/logo/scale_houz.svg" alt="Scale Houz" /></a>
+    <a class="ob-back" href="/">← Back to site</a>
+  </div>
+  <div class="ob-bar-wrap"><div id="ob-bar"></div></div>
+  <div id="ob-stage"></div>
+  <div class="ob-hint" aria-hidden="true">Enter to continue</div>
+
+  <script is:inline define:vars={{ FORM_ENDPOINT, WEB3FORMS_KEY }}>
+(function () {
+  var reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var $ = function (s, r) { return (r || document).querySelector(s); };
+
+  /* custom cursor */
+  (function initCursor(){
+    if (!matchMedia('(hover: hover) and (pointer: fine)').matches) return;
+    var dot = document.getElementById('cursor'), ring = document.getElementById('cursor-ring');
+    if (!dot || !ring) return;
+    var mx = innerWidth / 2, my = innerHeight / 2, rx = mx, ry = my;
+    addEventListener('mousemove', function (e) {
+      mx = e.clientX; my = e.clientY;
+      dot.style.transform = 'translate(' + mx + 'px,' + my + 'px)';
+    });
+    (function loop(){
+      rx += (mx - rx) * 0.18; ry += (my - ry) * 0.18;
+      ring.style.transform = 'translate(' + rx + 'px,' + ry + 'px)';
+      requestAnimationFrame(loop);
+    })();
+    var grow = function () { document.body.classList.add('cursor-lg'); };
+    var shrink = function () { document.body.classList.remove('cursor-lg'); };
+    document.addEventListener('mouseover', function (e) {
+      if (e.target.closest('a, button, .ob-opt, input, textarea')) grow();
+    });
+    document.addEventListener('mouseout', function (e) {
+      if (e.target.closest('a, button, .ob-opt, input, textarea')) shrink();
+    });
+  })();
+  var stage = $('#ob-stage'), bar = $('#ob-bar');
+  var KEY = 'sh-project-intake';
+  var data = {}; try { data = JSON.parse(localStorage.getItem(KEY) || '{}'); } catch (e) {}
+  function save(){ try { localStorage.setItem(KEY, JSON.stringify(data)); } catch (e) {} }
+  function esc(s){ return String(s==null?'':s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];}); }
+  function firstName(n){ return String(n||'').trim().split(/\s+/)[0] || ''; }
+
+  var STEPS = [
+    { key:'name', accent:'var(--sh-cyan)', kicker:'01 — Introductions', type:'text', q:'First up — what should<br>we call you?', placeholder:'Your full name', cta:'Continue' },
+    { key:'email', accent:'var(--sh-amber)', kicker:'02 — Contact', type:'text', inputType:'email', validate:'email', q:'What’s the best<br>email to reach you?', placeholder:'you@company.com', cta:'Continue' },
+    { key:'phone', accent:'var(--sh-magenta)', kicker:'03 — Contact', type:'text', inputType:'tel', validate:'phone', q:'And a number<br>we can call?', placeholder:'+1 555 000 0000', cta:'Continue' },
+    { key:'brand', accent:'var(--sh-cyan)', kicker:'04 — Your brand', type:'text', q:'What’s your<br>D2C brand called?', placeholder:'Brand name', cta:'Continue' },
+    { key:'industry', accent:'var(--sh-amber)', kicker:'05 — Your world', type:'chips', q:'Which industry<br>are you in?', options:['Skincare & Beauty','Food & Beverage','Fashion & Apparel','Health & Wellness','Home & Lifestyle','Other'] },
+    { key:'requirement', accent:'var(--sh-magenta)', kicker:'06 — The work', type:'final', q:'Last thing — what<br>do you need from us?', placeholder:'Tell us what you’re looking for — brand, design, website, marketing…' }
+  ];
+  var idx = 0;
+
+  function progress(){ if (bar) bar.style.width = (idx / STEPS.length * 100) + '%'; }
+  function mkGo(label, accent){
+    var b = document.createElement('button'); b.type = 'button'; b.className = 'ob-go';
+    b.innerHTML = esc(label) + ' <span aria-hidden="true">→</span>'; b.style.background = accent;
+    return b;
+  }
+  function mkPrev(){
+    if (idx === 0) return null;
+    var b = document.createElement('button'); b.type = 'button'; b.className = 'ob-prev';
+    b.textContent = '← Back';
+    b.addEventListener('click', function(){ idx--; render(); });
+    return b;
+  }
+  function shell(accent, kicker, q, sub){
+    var w = document.createElement('div'); w.className = 'ob-wrap';
+    var k = document.createElement('div'); k.className = 'ob-kicker kicker'; k.textContent = kicker; k.style.color = accent;
+    var h = document.createElement('h2'); h.className = 'ob-q'; h.innerHTML = q;
+    w.appendChild(k); w.appendChild(h);
+    if (sub) { var p = document.createElement('p'); p.className = 'ob-sub'; p.textContent = sub; w.appendChild(p); }
+    return w;
+  }
+
+  function render(){
+    var s = STEPS[idx];
+    progress();
+    stage.innerHTML = '';
+    var w = shell(s.accent, s.kicker, s.q);
+
+    if (s.type === 'text') {
+      var row = document.createElement('div'); row.className = 'ob-row';
+      var input = document.createElement('input'); input.type = s.inputType || 'text'; input.className = 'ob-input';
+      input.value = ''; input.placeholder = s.placeholder || ''; input.setAttribute('aria-label', s.kicker);
+      input.style.setProperty('--acc', s.accent);
+      var btn = mkGo(s.cta || 'Continue', s.accent);
+      var valid = function (v) {
+        if (!v) return false;
+        if (s.validate === 'email') return /.+@.+\..+/.test(v);
+        if (s.validate === 'phone') return v.replace(/[^0-9]/g, '').length >= 7;
+        return true;
+      };
+      var go = function () { var v = input.value.trim(); if (!valid(v)) { input.focus(); input.classList.add('empty'); return; } data[s.key] = v; save(); next(); };
+      btn.addEventListener('click', go);
+      input.addEventListener('input', function () { input.classList.remove('empty'); });
+      input.addEventListener('keydown', function (e) { if (e.key === 'Enter') { e.preventDefault(); go(); } });
+      row.appendChild(input); row.appendChild(btn); w.appendChild(row);
+      var prev = mkPrev(); if (prev) { var act = document.createElement('div'); act.className = 'ob-actions'; act.appendChild(prev); w.appendChild(act); }
+      setTimeout(function () { input.focus(); }, reduced ? 0 : 420);
+
+    } else if (s.type === 'chips') {
+      var grid = document.createElement('div'); grid.className = 'ob-grid';
+      s.options.forEach(function (opt) {
+        var c = document.createElement('button'); c.type = 'button'; c.className = 'ob-opt'; c.textContent = opt;
+        c.style.setProperty('--acc', s.accent);
+        if (data[s.key] === opt) c.classList.add('picked');
+        c.addEventListener('click', function () { data[s.key] = opt; save(); c.classList.add('picked'); setTimeout(next, reduced ? 0 : 220); });
+        grid.appendChild(c);
+      });
+      w.appendChild(grid);
+      var prev2 = mkPrev(); if (prev2) { var act2 = document.createElement('div'); act2.className = 'ob-actions'; act2.appendChild(prev2); w.appendChild(act2); }
+
+    } else if (s.type === 'final') {
+      var msg = document.createElement('textarea'); msg.className = 'ob-textarea';
+      msg.placeholder = s.placeholder || ''; msg.value = '';
+      msg.style.setProperty('--acc', s.accent); msg.style.marginTop = '0';
+      w.appendChild(msg);
+
+      var actions = document.createElement('div'); actions.className = 'ob-actions';
+      var submit = mkGo('Submit', s.accent);
+      var go2 = function () {
+        var v = msg.value.trim();
+        if (!v) { msg.focus(); msg.style.borderColor = s.accent; return; }
+        data.requirement = v; data.completed = true; save();
+        submit.disabled = true; submit.style.opacity = '.6'; submit.innerHTML = 'Sending…';
+        sendForm(function () { finish(); });
+      };
+      submit.addEventListener('click', go2);
+      var prev3 = mkPrev();
+      actions.appendChild(submit); if (prev3) actions.appendChild(prev3);
+      w.appendChild(actions);
+      setTimeout(function () { msg.focus(); }, reduced ? 0 : 420);
+    }
+
+    stage.appendChild(w);
+  }
+
+  function next(){ if (idx < STEPS.length - 1) { idx++; render(); } else finish(); }
+
+  function sendForm(done){
+    var payload = {
+      access_key: WEB3FORMS_KEY,
+      subject: 'New project brief — Scale Houz',
+      name: data.name || '', email: data.email || '', phone: data.phone || '',
+      brand: data.brand || '', industry: data.industry || '', requirement: data.requirement || ''
+    };
+    if (!WEB3FORMS_KEY) { done(); return; }
+    fetch(FORM_ENDPOINT, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+      body: JSON.stringify(payload)
+    }).then(function () { done(); }).catch(function () { done(); });
+  }
+
+  function finish(){
+    if (bar) bar.style.width = '100%';
+    stage.innerHTML = '';
+    var fn = firstName(data.name) || 'there';
+    var w = shell('var(--sh-amber)', 'All set', 'Thanks, ' + esc(fn) + '.<br>We’ve got your brief —<br><span class="ob-serif">we’ll reply within a day.</span>');
+
+    var sum = document.createElement('ul'); sum.className = 'ob-summary';
+    [['Brand', data.brand], ['Industry', data.industry], ['Email', data.email], ['Phone', data.phone]].forEach(function (pair) {
+      if (!pair[1]) return;
+      var li = document.createElement('li'); li.innerHTML = pair[0] + ': <b>' + esc(pair[1]) + '</b>'; sum.appendChild(li);
+    });
+    w.appendChild(sum);
+
+    var actions = document.createElement('div'); actions.className = 'ob-actions';
+    var home = document.createElement('a'); home.className = 'ob-go'; home.style.background = 'var(--sh-amber)'; home.style.textDecoration = 'none';
+    home.href = '/'; home.innerHTML = 'Back to site <span aria-hidden="true">→</span>';
+    actions.appendChild(home);
+    w.appendChild(actions);
+
+    stage.appendChild(w);
+  }
+
+  render();
+})();
+  </script>
+</BaseLayout>

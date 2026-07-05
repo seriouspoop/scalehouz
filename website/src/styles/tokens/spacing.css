@@ -1,0 +1,30 @@
+/* Scale Houz — Spacing, radii, shadows, motion.
+   Derived: guidelines call for generous whitespace, strong hierarchy,
+   subtle texture/depth, premium feel. */
+:root {
+  /* Spacing (8px base, generous) */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --space-6: 32px;
+  --space-7: 48px;
+  --space-8: 64px;
+  --space-9: 96px;
+
+  /* Radii — crisp, minimal */
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 16px;
+  --radius-pill: 999px;
+
+  /* Shadows — soft, premium depth */
+  --shadow-card: 0 1px 2px rgba(0,0,0,0.06), 0 8px 24px rgba(0,0,0,0.08);
+  --shadow-pop: 0 12px 40px rgba(0,0,0,0.18);
+
+  /* Motion — quiet confidence: short fades, no bounces */
+  --ease-out: cubic-bezier(0.2, 0.8, 0.2, 1);
+  --duration-fast: 150ms;
+  --duration-base: 250ms;
+}

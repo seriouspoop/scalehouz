@@ -1,0 +1,14 @@
+---
+/** Infinite marquee band. Word content is injected by site.js into idA/idB. */
+export interface Props {
+  extraClass?: string;
+  dur?: string;
+  idA: string;
+  idB: string;
+}
+const { extraClass = '', dur = '40s', idA, idB } = Astro.props;
+---
+<div class:list={['marquee', extraClass]} aria-hidden="true" style={`--dur:${dur}`}>
+  <div class="marquee-track" id={idA}></div>
+  <div class="marquee-track" id={idB}></div>
+</div>
