@@ -52,7 +52,7 @@ header nav a.cta.ghost:hover { background: var(--sh-white); color: var(--sh-blac
 
 /* ---------- hero ---------- */
 #hero { position: sticky; top: 0; min-height: 100svh; overflow: hidden; display: flex; flex-direction: column; justify-content: center; padding: 128px clamp(20px, 6vw, 96px) 80px; z-index: 0; }
-body > .marquee, body > section:not(#hero), body > footer { position: relative; z-index: 1; }
+main > .marquee, main > section:not(#hero), body > footer { position: relative; z-index: 1; }
 .orb { position: absolute; border-radius: 50%; filter: blur(90px); opacity: .32; will-change: transform; pointer-events: none; }
 #orb-a { width: 560px; height: 560px; background: var(--sh-cyan); top: -12%; right: -8%; }
 #orb-b { width: 460px; height: 460px; background: var(--sh-amber); bottom: -18%; left: -6%; opacity: .2; }
